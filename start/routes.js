@@ -18,6 +18,11 @@ const Route = use('Route')
 
 Route.on('/').render('welcome')
 
-Route.get('users/:id', 'UserController.show').middleware('auth')
+// only accessible when user logged in
+Route.group(() => {
+	// User Routes
+  	Route.get('users/:id', 'UserController.show')
+
+}).middleware(['auth'])
 
 Route.post('login', 'UserController.login')
