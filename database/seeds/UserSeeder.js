@@ -17,17 +17,21 @@ const User = use('App/Models/User');
 class UserSeeder {
   async run () {
   	const admin = new User();
-    admin.name 	   = 'Administrator';
+    admin.displayname = 'Administrator';
     admin.username = 'admin';
     admin.password = 'admin123';
     admin.email    = 'admin@mail.com';
+    admin.role_id  = 1;
+    admin.group_id = 1;
     await admin.save();
 
     const user = new User();
-    user.name 	  = 'User';
+    user.displayname = 'User Internal';
     user.username = 'user';
     user.password = 'user123';
     user.email 	  = 'user@mail.com';
+    user.role_id  = 2;
+    user.group_id = 1;
     await user.save()
   }
 }
