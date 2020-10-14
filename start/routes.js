@@ -21,8 +21,13 @@ Route.on('/').render('welcome')
 // only accessible when user logged in
 Route.group(() => {
 	// User Routes
-  	Route.get('users/:id', 'UserController.show')
+  	Route.get('user', 'UserController.index')
+	Route.get('user/:id', 'UserController.detail')
+	Route.post('user', 'UserController.store')
+	Route.put('user/:id', 'UserController.update')
+	Route.delete('user/:id', 'UserController.remove')
 
 }).middleware(['auth'])
 
-Route.post('login', 'UserController.login')
+// Route login
+Route.post('login', 'AuthController.login')
