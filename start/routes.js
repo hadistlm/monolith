@@ -30,4 +30,9 @@ Route.group(() => {
 }).middleware(['auth'])
 
 // Route login
-Route.post('login', 'AuthController.login')
+Route.group(() => {
+	Route.post('login', 'AuthController.login')
+	Route.post('logout', 'AuthController.logout')
+	Route.post('logged_auth', 'AuthController.logged_data')
+	Route.get('csrf', 'AuthController.get_csrf')
+}).prefix('auth')
