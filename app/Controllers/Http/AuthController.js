@@ -5,15 +5,21 @@ class AuthController {
 		const { email, password } = request.all();
 		// first check if user already logged in or not
 		const status = await auth.check().then(check => {
-			return {'message': "You already logged in"}
+			return {'message': "user already logged in"}
 
 		// user hasn't logged in yet
 		}).catch(error => {
 			// try to login using email and password provided
 			return auth.attempt(email, password).then(user => {
-	  			return {'message': 'Login Success'}
+	  			return {
+	  				'data'	 : user,
+	  				'message': 'Login Success'
+	  			}
 			}).catch(error => {
-				return {'message': error.message.split(":").pop().trim()}
+				return {
+					'data'	 : {},
+					'message': error.message.split(":").pop().trim()
+				}
 			});
 		});
 
@@ -21,9 +27,24 @@ class AuthController {
 	}
 
 	async logout({ auth, response }) {
-	 	await auth.logout()
-	  	
-	  	return response.status(200).send({ message: 'Logout successfully!'})
+		try {
+			const check = await auth.check()
+			let status 	= null;
+
+			if (check) {
+				// attempt logout
+				await auth.logout()
+
+				status = { message: 'Logout successfully!'}
+			}else {
+				status = { message: 'Failed to logout user'}
+			}
+
+			return response.status(200).send(status);
+		// user hasn't logged in yet
+		} catch(e) {
+			return response.status(200).send({ message: 'User hasn`t logged in yet'});
+		}
 	}
 
 	async logged_data({ auth, response }) {
